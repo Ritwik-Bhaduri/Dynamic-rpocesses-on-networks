@@ -8,8 +8,8 @@ state = datasample([0,1], n,'Weights',[0.99,0.01]);
 % state_new = state_new(1:n)
 
 
-iter = 4000;
-repeat = 1;
+iter = 10000;
+repeat = 10;
 t = zeros(iter,1);
 prop_inf = zeros(iter,1);
     
@@ -20,6 +20,7 @@ for(j = 1:repeat)
         state_temp = gillespie(state_temp(1:n), G, mu, lambda);
         prop_inf(i) = sum(state_temp(1:n))/n;
         t(i) = state_temp(n+1);
+        i/iter*100
     end
     t = cumsum(t);
     Color=[1,0.5,0.5,0.3];
@@ -31,11 +32,12 @@ function S = gillespie(state, G,  mu, lambda)
     n = size(G);
     n = n(1);
     S = state;
+    state = state(1:n);
     propensity = zeros(n,1);    %propensity is the array of the transition rates of all the vertices
     for(i = 1:n)
         if(state(i)== 1)    propensity(i) = mu;
         else
-            m = sum(G(i,:));
+            m = G(i,:) * state.';
             propensity(i) = lambda * m;
         end
     end
