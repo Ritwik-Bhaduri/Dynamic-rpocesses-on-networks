@@ -44,7 +44,7 @@ end
 probability = probability/sum(probability);
 
 
-Nseq = zeros(length(values));
+Nseq = zeros(length(values),1);
 while not(isGraphic(Nseq)); Nseq = weightedRandomSample(n,values,probability); end
 G = randomGraphFromDegreeSequence(Nseq);
 plot(graph(G))
