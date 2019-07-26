@@ -1,9 +1,9 @@
 %tspan = linspace(0, (2* iter * 3 * 10^(-4)),iter*2);
 
-%tspan = linspace(0, max(t), iter/5000);    
+tspan = linspace(0, max(t), max(t) * 100);    
 % t used here comes from output of gillespie simulation. For independent use the above command
 
-tspan = linspace(0, 6, 6 * 10^4);
+% tspan = linspace(0, 5, 10^4);
 k_max = max(sum(G))
 sus_0 = zeros(k_max+1,k_max+1);
 inf_0 = zeros(k_max+1,k_max+1);
@@ -25,7 +25,7 @@ y_0 = [reshape(sus_0.', (k_max+1)^2, 1); reshape(inf_0.', (k_max+1)^2, 1)];
 y_0 = y_0 / sum(y_0);
 % y_0 dentes the the proportions
 
-[t, y] = ode45(@odefun, tspan, y_0);
+[t_gleeson, y] = ode45(@odefun, tspan, y_0);
 
 
 temp = size(y);
@@ -37,14 +37,14 @@ end
 
 hold on;
 lh.Color=[0.5,0.1,0.1,1];
-plot(t,inf,'color',lh.Color);
+plot(t_gleeson,inf,'color',lh.Color);
 
 
 
 function  dydt = odefun(t, y)
-    k_max =20;
+    k_max =99;
     dydt = zeros(2 * (k_max + 1)^2, 1);
-    mu =0;
+    mu = 20;
     lambda = 1;
     
     y_s = y(1:(k_max+1)^2, 1);
